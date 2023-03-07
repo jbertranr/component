@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />         
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.5/MarkerCluster.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.5/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/info_urb.css" />
+  <link rel="stylesheet" href="css/info_urb.css">
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>          
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>       
@@ -18,8 +18,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.3/proj4.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.1/proj4leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/leaflet.control.opacity@1.5.0/dist/L.Control.Opacity.min.js"></script>
-  <script src="https://mapes.mataro.cat/OpenData/css/mapaJS/src/js/map_plugin.js"></script>  
+  <script src="js/map_plugin.js"></script>  
   <script src="js/comp.js"></script>
+
+
+  <!-- Cridar el component --  https:// ... ?edit=wkt-->
+  <!-- Cridar el component --  https:// ... ?edit=wkt-->
+
 
 
 
@@ -283,17 +288,9 @@
   sig.mapa1.mapControl.addTo(mapJS1.map);
   sig.mapa1.baseMaps[Object.keys(sig.mapa1.baseMaps)[0]].addTo(mapJS1.map);
  
- // 
- 
- // L.control.opacity(sig.mapa1.overlayMaps, {label: '<b>Opacitat</b>', collapsed:true }).addTo(mapJS1.map);
-   L.control.opacity(sig.mapa1.overlayMaps, {collapsed:true }).addTo(mapJS1.map);
-  
-
-
-
-// var sig.WKT_bounds = "";
-            
- mapJS1.map.on('moveend', function(e) {
+  L.control.opacity(sig.mapa1.overlayMaps, {collapsed:true }).addTo(mapJS1.map);
+           
+  mapJS1.map.on('moveend', function(e) {
    mapJS1.itembounds = "";                
    if( mapJS1.itembounds.length > 3 ){ 
      mapJS1.bbox = mapJS1.map.getBounds(); 
@@ -334,8 +331,7 @@ var itemEditaGeomWKT = 'P96_WKTMAPA';
 
 if ( itemEditaGeom == 'Y'  ){
 
-  mapJS1.map.editFeatures = L.featureGroup().addTo( mapJS1.map );                  
-  
+  mapJS1.map.editFeatures = L.featureGroup().addTo( mapJS1.map );
 
   mapJS1.options  = {
      position: 'topleft',
@@ -388,16 +384,26 @@ if ( itemEditaGeom == 'Y'  ){
     var param = query[i].split("=");
     get[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
   }
-  if (get.hasOwnProperty('geom')) {
-    if (get.geom == 'punt'){
+  if (get.hasOwnProperty('afegeix')) {
+    if (get.afegeix == 'punt'){
       mapJS1.map.doubleClickZoom.disable();
       mapJS1.map.on('dblclick', function(e) {
         alert(toWKT( L.marker(e.latlng)));
       });
     }
+    if (get.afegeix == 'poly'){
+      document.querySelector(".leaflet-draw-draw-polygon").click();  // Sense jQuery emular click
+    }
   }
-
-
+  
+  if (get.hasOwnProperty('edit')) {
+    if (get.edit.length >10){
+      mapJS1.flyToWKT(get.edit);
+      mapJS1.wkts = omnivore.wkt.parse(get.edit);
+      mapJS1.wkts._layers[Object.keys(mapJS1.wkts._layers)[0]].addTo(mapJS1.map.editFeatures);                         
+      document.querySelector(".leaflet-draw-edit-edit").click();  // Sense jQuery emular click               
+    }
+  }
 
 </script>
 

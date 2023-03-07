@@ -84,9 +84,9 @@ function cercaGenericJSON( JSON, listview, temaCerca, faIcon, strCerca, dataset,
                   +  "          <div class='cerca__line cerca__line__elem--titol' onclick=\"recuperaWKT( '" + 'DS_PARCELARI200'+ "' ,'" + colCodi + "','" + equip[valCodi] + "'  ); \"  > "
                   +                 equip[colEtiq1]
                   +  "          </div>" 
-                  +  "          <div class='cerca__line cerca__line__elem--subtitol' > "
-                  +  "             &nbsp Ref. Cadastral &nbsp" +  equip[colEtiq2] 
-                  +  "          </div>" ; //   El div principal es tanca després       
+             //     +  "          <div class='cerca__line cerca__line__elem--subtitol' > "
+             //     +  "             &nbsp Ref. Cadastral &nbsp" +  equip[colEtiq2] 
+             //     +  "          </div>" ; //   El div principal es tanca després       
               html += "</div> </div>"; 
 
               listview.html( html );          
